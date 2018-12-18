@@ -40,11 +40,12 @@ public class ProductController {
     @RequestMapping("find")
     public Object findById(int id){
 
-        try {
-            TimeUnit.SECONDS.sleep(2);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        //模拟超时
+//        try {
+//            TimeUnit.SECONDS.sleep(3);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
         Product product = productService.findById(id);
 
