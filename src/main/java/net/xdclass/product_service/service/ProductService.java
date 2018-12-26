@@ -10,5 +10,6 @@ public interface ProductService {
 
     Product findById(int id);
 
+    Product saveProduct(Product product);
 
 }

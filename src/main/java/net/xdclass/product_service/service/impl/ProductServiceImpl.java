@@ -46,4 +46,10 @@ public class ProductServiceImpl implements ProductService {
     public Product findById(int id) {
         return daoMap.get(id);
     }
+
+    @Override
+    public Product saveProduct(Product product) {
+        daoMap.put(product.getId(), product);
+        return product;
+    }
 }

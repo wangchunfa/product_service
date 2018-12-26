@@ -62,4 +62,14 @@ public class Product implements Serializable {
     public void setStore(int store) {
         this.store = store;
     }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", store=" + store +
+                '}';
+    }
 }

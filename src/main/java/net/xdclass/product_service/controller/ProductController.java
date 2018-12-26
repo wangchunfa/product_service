@@ -5,9 +5,10 @@ import net.xdclass.product_service.service.ProductService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -15,6 +16,10 @@ import java.util.concurrent.TimeUnit;
 public class ProductController {
 
 
+    @Autowired
+    HttpServletRequest request;
+//    @Autowired
+//    HttpServletResponse response;
 
     @Value("${server.port}")
     private String port;
@@ -38,23 +43,36 @@ public class ProductController {
      * @return
      */
     @RequestMapping("find")
-    public Object findById(int id){
+    public Object findById(int id, HttpServletResponse response){
+        System.out.println("receive commit...");
 
         //模拟超时
 //        try {
-//            TimeUnit.SECONDS.sleep(3);
+//            TimeUnit.SECONDS.sleep(6);
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
 
-        Product product = productService.findById(id);
+        String requestId = request.getHeader("request-id");
+        System.out.println("request-id :" + requestId);
+        response.setHeader("request-id", requestId);
 
+        Product product = productService.findById(id);
         Product result = new Product();
         BeanUtils.copyProperties(product,result);
         result.setName( result.getName() + " data from port="+port );
+        System.out.println(result.toString());
         return result;
     }
 
-
+    @PostMapping("save")
+    public Object saveProduct(@RequestBody Product product, HttpServletResponse response){
+        String requestId = request.getHeader("request-id");
+        System.out.println("request-id by post:" + requestId);
+        response.setHeader("request-id-response", requestId);
+        productService.saveProduct(product);
+        throw new RuntimeException("错误啦！");
+//        return product;
+    }
 
 }
